@@ -4,6 +4,7 @@ const message = document.querySelector("#message");
 const weatherResult = document.querySelector("#weather-result");
 
 const cityName = document.querySelector("#city-name");
+const localTime = document.querySelector("#local-time");
 const temperature = document.querySelector("#temperature");
 const weatherDescription = document.querySelector("#weather-description");
 const windSpeed = document.querySelector("#wind-speed");
@@ -58,7 +59,11 @@ async function getCurrentWeather(latitude, longitude) {
 
   const data = await response.json();
 
-  return data.current;
+  return {
+    ...data.current,
+    timezone: data.timezone,
+  };
+  d;
 }
 
 function getWeatherDescription(code) {
@@ -116,6 +121,14 @@ searchForm.addEventListener("submit", async function (event) {
 
     weatherIcon.innerHTML = getWeatherIcon(weather.weather_code);
     cityName.textContent = `${location.name}, ${location.country}`;
+    localTime.textContent = `Local time: ${new Date().toLocaleTimeString(
+      "en-US",
+      {
+        timeZone: weather.timezone,
+        hour: "numeric",
+        minute: "2-digit",
+      },
+    )}`;
     const currentTemperature =
       temperatureUnit === "celsius"
         ? weather.temperature_2m

@@ -293,3 +293,9 @@ button {
     animation: none;
   }
 }
+
+#local-time {
+  margin: -4px 0 12px;
+  font-size: 14px;
+  color: #64748b;
+}
