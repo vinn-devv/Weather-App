@@ -77,3 +77,38 @@ button:disabled {
   font-size: 36px;
   font-weight: bold;
 }
+#weather-icon {
+  display: flex;
+  justify-content: center;
+  margin: 16px 0;
+  color: #2563eb;
+}
+
+#weather-icon svg {
+  width: 64px;
+  height: 64px;
+}
+
+#city-name {
+  margin-bottom: 8px;
+  font-size: 22px;
+}
+
+#weather-description {
+  margin-top: 8px;
+  font-size: 16px;
+  color: #475569;
+}
+
+#wind-speed {
+  margin-bottom: 0;
+  font-size: 14px;
+  color: #64748b;
+}
+
+#feels-like {
+  margin-top: -20px;
+  margin-bottom: 16px;
+  font-size: 14px;
+  color: #64748b;
+}

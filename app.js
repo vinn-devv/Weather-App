@@ -10,6 +10,7 @@ const windSpeed = document.querySelector("#wind-speed");
 
 const searchButton = document.querySelector("#search-button");
 const weatherIcon = document.querySelector("#weather-icon");
+const feelsLike = document.querySelector("#feels-like");
 
 async function getCityCoordinates(city) {
   const url = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1&language=en&format=json`;
@@ -30,7 +31,7 @@ async function getCityCoordinates(city) {
 }
 
 async function getCurrentWeather(latitude, longitude) {
-  const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,weather_code,wind_speed_10m&timezone=auto`;
+  const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m&timezone=auto`;
 
   const response = await fetch(url);
 
@@ -99,6 +100,7 @@ searchForm.addEventListener("submit", async function (event) {
     weatherIcon.innerHTML = getWeatherIcon(weather.weather_code);
     cityName.textContent = `${location.name}, ${location.country}`;
     temperature.textContent = `${weather.temperature_2m}°C`;
+    feelsLike.textContent = `Feels like ${weather.apparent_temperature}°C`;
     weatherDescription.textContent = getWeatherDescription(
       weather.weather_code,
     );
