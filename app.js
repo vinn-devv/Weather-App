@@ -9,6 +9,7 @@ const temperature = document.querySelector("#temperature");
 const weatherDescription = document.querySelector("#weather-description");
 const windSpeed = document.querySelector("#wind-speed");
 const humidity = document.querySelector("#humidity");
+const refreshButton = document.querySelector("#refresh-button");
 
 const searchButton = document.querySelector("#search-button");
 const weatherIcon = document.querySelector("#weather-icon");
@@ -17,6 +18,7 @@ const celsiusButton = document.querySelector("#celsius-button");
 const fahrenheitButton = document.querySelector("#fahrenheit-button");
 
 let temperatureUnit = "celsius";
+let lastSearchedCity = "";
 
 async function getCityCoordinates(city) {
   const url = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1&language=en&format=json`;
@@ -98,6 +100,7 @@ searchForm.addEventListener("submit", async function (event) {
   event.preventDefault();
 
   const city = cityInput.value.trim();
+  lastSearchedCity = city;
 
   if (!city) {
     message.classList.add("error");
@@ -203,4 +206,11 @@ celsiusButton.addEventListener("click", function () {
 
 fahrenheitButton.addEventListener("click", function () {
   updateTemperatureUnit("fahrenheit");
+});
+
+refreshButton.addEventListener("click", function () {
+  if (lastSearchedCity) {
+    cityInput.value = lastSearchedCity;
+    searchForm.requestSubmit();
+  }
 });
