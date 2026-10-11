@@ -112,3 +112,112 @@ button:disabled {
   font-size: 14px;
   color: #64748b;
 }
+
+.temperature-toggle {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin: 12px 0;
+}
+
+.temperature-toggle button {
+  padding: 8px 14px;
+  background: #e2e8f0;
+  color: #334155;
+}
+
+.temperature-toggle button.active {
+  background: #2563eb;
+  color: white;
+}
+
+#city-input {
+  width: 100%;
+  min-width: 0;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+
+#city-input:focus-visible,
+button:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 3px;
+}
+
+button {
+  transition:
+    background-color 0.2s,
+    opacity 0.2s;
+}
+
+#weather-result {
+  padding: 24px 18px;
+}
+
+#city-name {
+  margin: 0 0 12px;
+  overflow-wrap: anywhere;
+}
+
+#weather-icon {
+  margin: 12px 0;
+}
+
+#weather-icon svg {
+  width: 72px;
+  height: 72px;
+}
+
+#temperature {
+  margin: 8px 0;
+  font-size: 48px;
+  line-height: 1.1;
+  letter-spacing: -1.5px;
+  font-variant-numeric: tabular-nums;
+}
+
+#feels-like {
+  margin: 8px 0 16px;
+  line-height: 1.5;
+}
+
+#weather-description {
+  margin: 12px 0;
+}
+
+#wind-speed {
+  margin-top: 12px;
+}
+
+.temperature-toggle {
+  width: fit-content;
+  margin: 16px auto;
+  padding: 4px;
+  gap: 4px;
+  background: #e2e8f0;
+  border-radius: 10px;
+}
+
+.temperature-toggle button {
+  min-width: 56px;
+  padding: 8px 12px;
+  background: transparent;
+  color: #475569;
+  border-radius: 7px;
+}
+
+.temperature-toggle button.active {
+  background: #2563eb;
+  color: #fff;
+}
+
+@media (max-width: 380px) {
+  .weather-app {
+    padding: 20px;
+  }
+
+  #temperature {
+    font-size: 42px;
+  }
+}

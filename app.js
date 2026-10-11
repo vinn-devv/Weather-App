@@ -11,6 +11,10 @@ const windSpeed = document.querySelector("#wind-speed");
 const searchButton = document.querySelector("#search-button");
 const weatherIcon = document.querySelector("#weather-icon");
 const feelsLike = document.querySelector("#feels-like");
+const celsiusButton = document.querySelector("#celsius-button");
+const fahrenheitButton = document.querySelector("#fahrenheit-button");
+
+let temperatureUnit = "celsius";
 
 async function getCityCoordinates(city) {
   const url = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1&language=en&format=json`;
@@ -99,8 +103,18 @@ searchForm.addEventListener("submit", async function (event) {
 
     weatherIcon.innerHTML = getWeatherIcon(weather.weather_code);
     cityName.textContent = `${location.name}, ${location.country}`;
-    temperature.textContent = `${weather.temperature_2m}°C`;
-    feelsLike.textContent = `Feels like ${weather.apparent_temperature}°C`;
+    const currentTemperature =
+      temperatureUnit === "celsius"
+        ? weather.temperature_2m
+        : (weather.temperature_2m * 9) / 5 + 32;
+
+    temperature.textContent = `${Math.round(currentTemperature)}°${temperatureUnit === "celsius" ? "C" : "F"}`;
+    const feelsLikeTemperature =
+      temperatureUnit === "celsius"
+        ? weather.apparent_temperature
+        : (weather.apparent_temperature * 9) / 5 + 32;
+
+    feelsLike.textContent = `Feels like ${Math.round(feelsLikeTemperature)}°${temperatureUnit === "celsius" ? "C" : "F"}`;
     weatherDescription.textContent = getWeatherDescription(
       weather.weather_code,
     );
@@ -144,3 +158,21 @@ function getWeatherIcon(code) {
     stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
     aria-hidden="true">${icon}</svg>`;
 }
+function updateTemperatureUnit(unit) {
+  temperatureUnit = unit;
+
+  celsiusButton.classList.toggle("active", unit === "celsius");
+  fahrenheitButton.classList.toggle("active", unit === "fahrenheit");
+
+  if (cityName.textContent) {
+    searchForm.requestSubmit();
+  }
+}
+
+celsiusButton.addEventListener("click", function () {
+  updateTemperatureUnit("celsius");
+});
+
+fahrenheitButton.addEventListener("click", function () {
+  updateTemperatureUnit("fahrenheit");
+});
