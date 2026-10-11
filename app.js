@@ -5,6 +5,7 @@ const weatherResult = document.querySelector("#weather-result");
 
 const cityName = document.querySelector("#city-name");
 const localTime = document.querySelector("#local-time");
+const lastUpdated = document.querySelector("#last-updated");
 const temperature = document.querySelector("#temperature");
 const weatherDescription = document.querySelector("#weather-description");
 const windSpeed = document.querySelector("#wind-speed");
@@ -148,6 +149,13 @@ searchForm.addEventListener("submit", async function (event) {
       weather.weather_code,
     );
     windSpeed.textContent = `Wind: ${weather.wind_speed_10m} km/h`;
+    lastUpdated.textContent = `Last updated: ${new Date().toLocaleTimeString(
+      "en-US",
+      {
+        hour: "numeric",
+        minute: "2-digit",
+      },
+    )}`;
     humidity.textContent = `Humidity: ${weather.relative_humidity_2m}%`;
 
     weatherResult.hidden = false;

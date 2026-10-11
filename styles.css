@@ -309,3 +309,9 @@ button {
 #refresh-button:hover {
   background: #115e59;
 }
+
+#last-updated {
+  margin: 10px 0 0;
+  font-size: 12px;
+  color: #94a3b8;
+}
