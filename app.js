@@ -7,6 +7,7 @@ const cityName = document.querySelector("#city-name");
 const temperature = document.querySelector("#temperature");
 const weatherDescription = document.querySelector("#weather-description");
 const windSpeed = document.querySelector("#wind-speed");
+const humidity = document.querySelector("#humidity");
 
 const searchButton = document.querySelector("#search-button");
 const weatherIcon = document.querySelector("#weather-icon");
@@ -41,7 +42,7 @@ async function getCityCoordinates(city) {
 }
 
 async function getCurrentWeather(latitude, longitude) {
-  const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m&timezone=auto`;
+  const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,apparent_temperature,relative_humidity_2m,weather_code,wind_speed_10m&timezone=auto`;
 
   let response;
 
@@ -131,6 +132,7 @@ searchForm.addEventListener("submit", async function (event) {
       weather.weather_code,
     );
     windSpeed.textContent = `Wind: ${weather.wind_speed_10m} km/h`;
+    humidity.textContent = `Humidity: ${weather.relative_humidity_2m}%`;
 
     weatherResult.hidden = false;
     message.textContent = "";

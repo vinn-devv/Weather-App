@@ -190,6 +190,13 @@ button {
   margin-top: 12px;
 }
 
+#humidity {
+  margin-top: 8px;
+  margin-bottom: 0;
+  font-size: 14px;
+  color: #64748b;
+}
+
 .temperature-toggle {
   width: fit-content;
   margin: 16px auto;
