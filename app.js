@@ -19,7 +19,13 @@ let temperatureUnit = "celsius";
 async function getCityCoordinates(city) {
   const url = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1&language=en&format=json`;
 
-  const response = await fetch(url);
+  let response;
+
+  try {
+    response = await fetch(url);
+  } catch {
+    throw new Error("Network error. Check your internet connection.");
+  }
 
   if (!response.ok) {
     throw new Error("Unable to find city.");
@@ -37,7 +43,13 @@ async function getCityCoordinates(city) {
 async function getCurrentWeather(latitude, longitude) {
   const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m&timezone=auto`;
 
-  const response = await fetch(url);
+  let response;
+
+  try {
+    response = await fetch(url);
+  } catch {
+    throw new Error("Network error. Check your internet connection.");
+  }
 
   if (!response.ok) {
     throw new Error("Unable to fetch weather data.");
@@ -123,6 +135,7 @@ searchForm.addEventListener("submit", async function (event) {
     weatherResult.hidden = false;
     message.textContent = "";
   } catch (error) {
+    weatherResult.hidden = true;
     message.classList.add("error");
     message.textContent = error.message;
   } finally {
