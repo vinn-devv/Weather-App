@@ -248,3 +248,41 @@ button {
     width: 100%;
   }
 }
+
+#message {
+  margin: 12px 0;
+  line-height: 1.5;
+}
+
+#message:empty {
+  display: none;
+}
+
+#search-button:disabled {
+  opacity: 0.7;
+}
+
+#search-button:disabled::after {
+  content: "";
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-left: 8px;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: search-spin 0.7s linear infinite;
+  vertical-align: -1px;
+}
+
+@keyframes search-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #search-button:disabled::after {
+    animation: none;
+  }
+}
