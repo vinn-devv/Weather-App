@@ -9,6 +9,7 @@ const weatherDescription = document.querySelector("#weather-description");
 const windSpeed = document.querySelector("#wind-speed");
 
 const searchButton = document.querySelector("#search-button");
+const weatherIcon = document.querySelector("#weather-icon");
 
 async function getCityCoordinates(city) {
   const url = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1&language=en&format=json`;
@@ -95,6 +96,7 @@ searchForm.addEventListener("submit", async function (event) {
       location.longitude,
     );
 
+    weatherIcon.innerHTML = getWeatherIcon(weather.weather_code);
     cityName.textContent = `${location.name}, ${location.country}`;
     temperature.textContent = `${weather.temperature_2m}°C`;
     weatherDescription.textContent = getWeatherDescription(
@@ -112,3 +114,31 @@ searchForm.addEventListener("submit", async function (event) {
     searchButton.textContent = "Search";
   }
 });
+
+function getWeatherIcon(code) {
+  let icon = "";
+
+  if (code === 0) {
+    icon = `<circle cx="12" cy="12" r="4"></circle>
+      <path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"></path>`;
+  } else if (code <= 3) {
+    icon = `<path d="M20 16.2A4.5 4.5 0 0 0 18 7.5a6 6 0 0 0-11.4 2A4 4 0 0 0 7 17h11"></path>`;
+  } else if (code === 45 || code === 48) {
+    icon = `<path d="M3 8h18M5 12h14M3 16h18"></path>`;
+  } else if ((code >= 51 && code <= 67) || (code >= 80 && code <= 82)) {
+    icon = `<path d="M20 15.5A4.5 4.5 0 0 0 18 7a6 6 0 0 0-11.4 2A4 4 0 0 0 7 16h11"></path>
+      <path d="m8 19-1 2m6-2-1 2m6-2-1 2"></path>`;
+  } else if ((code >= 71 && code <= 77) || (code >= 85 && code <= 86)) {
+    icon = `<path d="M12 2v20M4 7l16 10M4 17 20 7M7 3l10 18"></path>`;
+  } else if (code >= 95) {
+    icon = `<path d="M20 15.5A4.5 4.5 0 0 0 18 7a6 6 0 0 0-11.4 2A4 4 0 0 0 7 16h11"></path>
+      <path d="m13 16-4 4h4l-1 4 5-6h-4l1-2"></path>`;
+  } else {
+    icon = `<circle cx="12" cy="12" r="4"></circle>`;
+  }
+
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64"
+    viewBox="0 0 24 24" fill="none" stroke="currentColor"
+    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+    aria-hidden="true">${icon}</svg>`;
+}
