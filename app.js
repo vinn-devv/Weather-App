@@ -69,6 +69,17 @@ async function getCurrentWeather(latitude, longitude) {
   d;
 }
 
+function getWeatherCategory(code) {
+  if (code === 0 || code === 1) return "clear";
+  if (code === 2 || code === 3) return "cloudy";
+  if (code === 45 || code === 48) return "fog";
+  if (code >= 51 && code <= 67) return "rain";
+  if (code >= 71 && code <= 86) return "snow";
+  if (code >= 95) return "storm";
+
+  return "default";
+}
+
 function getWeatherDescription(code) {
   const weatherCodes = {
     0: "Clear sky",
@@ -124,6 +135,7 @@ searchForm.addEventListener("submit", async function (event) {
     );
 
     weatherIcon.innerHTML = getWeatherIcon(weather.weather_code);
+    document.body.dataset.weather = getWeatherCategory(weather.weather_code);
     cityName.textContent = `${location.name}, ${location.country}`;
     localTime.textContent = `Local time: ${new Date().toLocaleTimeString(
       "en-US",

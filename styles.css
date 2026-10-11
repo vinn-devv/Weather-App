@@ -315,3 +315,27 @@ button {
   font-size: 12px;
   color: #94a3b8;
 }
+
+body[data-weather="clear"] {
+  background: #fff4d6;
+}
+
+body[data-weather="cloudy"] {
+  background: #e2e8f0;
+}
+
+body[data-weather="fog"] {
+  background: #e5e7eb;
+}
+
+body[data-weather="rain"] {
+  background: #dbeafe;
+}
+
+body[data-weather="snow"] {
+  background: #f0f9ff;
+}
+
+body[data-weather="storm"] {
+  background: #ddd6fe;
+}
