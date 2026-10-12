@@ -231,7 +231,7 @@ button {
 
 #search-form {
   display: grid;
-  grid-template-columns: 65px 32px minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr) auto;
   gap: 10px;
   align-items: end;
 }
@@ -409,7 +409,7 @@ body[data-weather="storm"] {
 
 .forecast-day {
   display: grid;
-  grid-template-columns: 55px minmax(0, 1fr) auto;
+  grid-template-columns: 65px 32px minmax(0, 1fr) auto;
   align-items: center;
   gap: 8px;
   padding: 12px;
