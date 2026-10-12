@@ -369,3 +369,15 @@ body[data-weather="storm"] {
 #history-list li button:hover {
   background: #cbd5e1;
 }
+
+#clear-history-button {
+  padding: 8px 12px;
+  background: #fee2e2;
+  color: #b91c1c;
+  font-size: 13px;
+  border-radius: 8px;
+}
+
+#clear-history-button:hover {
+  background: #fecaca;
+}

@@ -2,6 +2,7 @@ const searchForm = document.querySelector("#search-form");
 const cityInput = document.querySelector("#city-input");
 const message = document.querySelector("#message");
 const weatherResult = document.querySelector("#weather-result");
+const clearHistoryButton = document.querySelector("#clear-history-button");
 
 const cityName = document.querySelector("#city-name");
 const localTime = document.querySelector("#local-time");
@@ -262,4 +263,10 @@ refreshButton.addEventListener("click", function () {
     cityInput.value = lastSearchedCity;
     searchForm.requestSubmit();
   }
+});
+
+clearHistoryButton.addEventListener("click", function () {
+  searchHistory.length = 0;
+  localStorage.removeItem("weatherSearchHistory");
+  historyList.innerHTML = "";
 });
