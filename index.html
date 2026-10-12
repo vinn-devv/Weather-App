@@ -3,54 +3,320 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Weather App</title>
-    <link rel="stylesheet" href="styles.css" />
+    <title>Weather</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./output.css" />
     <script src="app.js" defer></script>
   </head>
-  <body>
-    <main class="weather-app">
-      <h1>Weather App</h1>
+  <body data-weather="default">
+    <div class="backdrop" aria-hidden="true"></div>
+    <div class="progress" aria-hidden="true"></div>
 
-      <form id="search-form">
-        <input
-          id="city-input"
-          type="text"
-          placeholder="Enter a city"
-          required
-        />
-        <button id="search-button" type="submit">Search</button>
-        <button type="button" id="location-button">Use My Location</button>
-      </form>
+    <div class="app">
+      <header class="topbar">
+        <h1 class="brand">
+          <span class="marker" aria-hidden="true"></span>Weather
+        </h1>
 
-      <p id="message" role="status" aria-live="polite"></p>
-
-      <section id="weather-result" hidden>
-        <h2 id="city-name"></h2>
-        <p id="local-time"></p>
-        <section id="search-history">
-          <h2>Recent Searches</h2>
-          <button type="button" id="clear-history-button">Clear History</button>
-          <ul id="history-list"></ul>
-        </section>
-        <p id="temperature"></p>
-
-        <div class="temperature-toggle">
-          <button type="button" id="celsius-button" class="active">°C</button>
-          <button type="button" id="fahrenheit-button">°F</button>
+        <div
+          class="unit-toggle glass"
+          role="group"
+          aria-label="Temperature unit"
+        >
+          <button type="button" id="celsius-button" aria-pressed="true">
+            °C
+          </button>
+          <button type="button" id="fahrenheit-button" aria-pressed="false">
+            °F
+          </button>
         </div>
-        <p id="feels-like"></p>
-        <p id="weather-icon" aria-hidden="true"></p>
-        <p id="weather-description"></p>
-        <p id="weather-advice"></p>
-        <p id="wind-speed"></p>
-        <p id="humidity"></p>
-        <p id="last-updated"></p>
-        <section id="forecast-section">
-          <h2>5-Day Forecast</h2>
-          <div id="forecast-list"></div>
+
+        <form id="search-form" role="search">
+          <div class="search-field glass">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.75"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <circle cx="11" cy="11" r="7"></circle>
+              <path d="m20 20-3.5-3.5"></path>
+            </svg>
+            <label for="city-input" class="sr-only">City</label>
+            <input
+              id="city-input"
+              type="text"
+              placeholder="Search for a city"
+              autocomplete="off"
+              required
+            />
+            <button id="search-button" class="btn" type="submit">
+              <span id="search-label">Search</span>
+            </button>
+          </div>
+          <button
+            type="button"
+            class="icon-button glass"
+            data-action="locate"
+            aria-label="Use my location"
+            title="Use my location"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.75"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <circle cx="12" cy="12" r="3"></circle>
+              <circle cx="12" cy="12" r="7.5"></circle>
+              <path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22"></path>
+            </svg>
+          </button>
+        </form>
+      </header>
+
+      <main>
+        <p id="message" role="status" aria-live="polite"></p>
+
+        <section
+          id="search-history"
+          class="history"
+          aria-labelledby="history-heading"
+          hidden
+        >
+          <h2 id="history-heading" class="section-title">Recent</h2>
+          <ul id="history-list"></ul>
+          <button type="button" id="clear-history-button" class="text-button">
+            Clear
+          </button>
         </section>
-        <button type="button" id="refresh-button">Refresh Weather</button>
-      </section>
-    </main>
+
+        <section
+          id="empty-state"
+          class="card empty"
+          aria-labelledby="empty-heading"
+        >
+          <h2 id="empty-heading">Check the sky, anywhere.</h2>
+          <p>
+            Search for a city above, or let your browser find where you are.
+          </p>
+          <div class="empty-actions">
+            <button type="button" class="btn" data-action="locate">
+              Use my location
+            </button>
+            <button type="button" class="chip" data-city="Manila">
+              Manila
+            </button>
+            <button type="button" class="chip" data-city="Tokyo">Tokyo</button>
+            <button type="button" class="chip" data-city="London">
+              London
+            </button>
+          </div>
+        </section>
+
+        <div id="weather-result" class="card" hidden>
+          <div class="card-head">
+            <p class="section-title"><span id="local-time"></span></p>
+            <button
+              type="button"
+              id="refresh-button"
+              class="icon-button small"
+              aria-label="Refresh weather"
+              title="Refresh weather"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.75"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <path d="M21 12a9 9 0 1 1-3-6.7"></path>
+                <path d="M21 3v6h-6"></path>
+              </svg>
+            </button>
+          </div>
+
+          <section class="summary" aria-labelledby="city-name">
+            <h2 id="city-name" class="place"></h2>
+            <div id="weather-icon" class="hero-icon" aria-hidden="true"></div>
+            <p id="temperature" class="temperature"></p>
+            <p id="weather-description" class="condition"></p>
+            <p id="weather-advice" class="advice"></p>
+            <p id="sun-pill" class="sun-pill" hidden>
+              <span class="sun-item">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                  focusable="false"
+                >
+                  <path
+                    d="M17 18a5 5 0 0 0-10 0M12 2v7M4.22 10.22l1.42 1.42M1 18h2M21 18h2M18.36 11.64l1.42-1.42M23 22H1M8 6l4-4 4 4"
+                  ></path>
+                </svg>
+                <span
+                  ><span class="sr-only">Sunrise </span
+                  ><span id="sunrise"></span
+                ></span>
+              </span>
+              <span id="daylight"></span>
+              <span class="sun-item">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                  focusable="false"
+                >
+                  <path
+                    d="M17 18a5 5 0 0 0-10 0M12 9v9M4.22 10.22l1.42 1.42M1 18h2M21 18h2M18.36 11.64l1.42-1.42M23 22H1M16 5l-4 4-4-4"
+                  ></path>
+                </svg>
+                <span
+                  ><span class="sr-only">Sunset </span><span id="sunset"></span
+                ></span>
+              </span>
+            </p>
+          </section>
+
+          <p id="rain-pill" class="rain-pill" hidden>
+            <span id="rain-icon" class="rain-icon" aria-hidden="true"></span>
+            <span id="rain-text"></span>
+          </p>
+
+          <dl class="stats">
+            <div class="stat">
+              <dt>Feels like</dt>
+              <dd id="feels-like"></dd>
+            </div>
+            <div class="stat">
+              <dt>High</dt>
+              <dd id="high"></dd>
+            </div>
+            <div class="stat">
+              <dt>Low</dt>
+              <dd id="low"></dd>
+            </div>
+          </dl>
+
+          <section class="section" aria-labelledby="forecast-heading">
+            <h3 id="forecast-heading" class="section-title">Weekly Forecast</h3>
+            <ol id="forecast-list"></ol>
+          </section>
+
+          <section class="section" aria-labelledby="conditions-heading">
+            <h3 id="conditions-heading" class="section-title">Conditions</h3>
+            <div class="tiles">
+              <div class="tile">
+                <p class="tile-label">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.75"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                    focusable="false"
+                  >
+                    <path
+                      d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"
+                    ></path>
+                  </svg>
+                  Wind
+                </p>
+                <p id="wind-speed" class="tile-value"></p>
+              </div>
+              <div class="tile">
+                <p class="tile-label">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.75"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                    focusable="false"
+                  >
+                    <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path>
+                  </svg>
+                  Humidity
+                </p>
+                <p id="humidity" class="tile-value"></p>
+              </div>
+              <div class="tile">
+                <p class="tile-label">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.75"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                    focusable="false"
+                  >
+                    <circle cx="12" cy="12" r="4"></circle>
+                    <path
+                      d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"
+                    ></path>
+                  </svg>
+                  UV index
+                </p>
+                <p id="uv-index" class="tile-value"></p>
+              </div>
+              <div class="tile">
+                <p class="tile-label">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.75"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                    focusable="false"
+                  >
+                    <path
+                      d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"
+                    ></path>
+                    <circle cx="12" cy="12" r="3"></circle>
+                  </svg>
+                  Visibility
+                </p>
+                <p id="visibility" class="tile-value"></p>
+              </div>
+            </div>
+          </section>
+
+          <p id="last-updated" class="updated"></p>
+        </div>
+      </main>
+    </div>
   </body>
 </html>
