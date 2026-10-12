@@ -435,3 +435,15 @@ body[data-weather="storm"] {
     font-size: 12px;
   }
 }
+
+.forecast-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #2563eb;
+}
+
+.forecast-icon svg {
+  width: 28px;
+  height: 28px;
+}

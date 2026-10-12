@@ -209,6 +209,9 @@ searchForm.addEventListener("submit", async function (event) {
     weather.daily.time.forEach(function (date, index) {
       const day = document.createElement("div");
       day.className = "forecast-day";
+      const icon = document.createElement("div");
+      icon.className = "forecast-icon";
+      icon.innerHTML = getWeatherIcon(weather.daily.weather_code[index]);
 
       const dayName = document.createElement("p");
       dayName.textContent =
@@ -233,7 +236,7 @@ searchForm.addEventListener("submit", async function (event) {
 
       temperatures.textContent = `${Math.round(convertTemperature(high))}° / ${Math.round(convertTemperature(low))}°${temperatureUnit === "celsius" ? "C" : "F"}`;
 
-      day.append(dayName, description, temperatures);
+      day.append(dayName, icon, description, temperatures);
       forecastList.appendChild(day);
     });
     message.textContent = "";
