@@ -3,6 +3,7 @@ const cityInput = document.querySelector("#city-input");
 const message = document.querySelector("#message");
 const weatherResult = document.querySelector("#weather-result");
 const clearHistoryButton = document.querySelector("#clear-history-button");
+const forecastList = document.querySelector("#forecast-list");
 
 const cityName = document.querySelector("#city-name");
 const localTime = document.querySelector("#local-time");
@@ -51,7 +52,7 @@ async function getCityCoordinates(city) {
 }
 
 async function getCurrentWeather(latitude, longitude) {
-  const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,apparent_temperature,relative_humidity_2m,weather_code,wind_speed_10m&timezone=auto`;
+  const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,apparent_temperature,relative_humidity_2m,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto&forecast_days=5`;
 
   let response;
 
@@ -70,6 +71,7 @@ async function getCurrentWeather(latitude, longitude) {
   return {
     ...data.current,
     timezone: data.timezone,
+    daily: data.daily,
   };
   d;
 }
@@ -202,6 +204,34 @@ searchForm.addEventListener("submit", async function (event) {
     humidity.textContent = `Humidity: ${weather.relative_humidity_2m}%`;
 
     weatherResult.hidden = false;
+    forecastList.innerHTML = "";
+
+    weather.daily.time.forEach(function (date, index) {
+      const day = document.createElement("div");
+      day.className = "forecast-day";
+
+      const dayName = document.createElement("p");
+      dayName.textContent =
+        index === 0
+          ? "Today"
+          : new Date(date + "T12:00:00").toLocaleDateString("en-US", {
+              weekday: "short",
+            });
+
+      const description = document.createElement("p");
+      description.textContent = getWeatherDescription(
+        weather.daily.weather_code[index],
+      );
+
+      const temperatures = document.createElement("p");
+      const high = weather.daily.temperature_2m_max[index];
+      const low = weather.daily.temperature_2m_min[index];
+
+      temperatures.textContent = `${Math.round(high)}° / ${Math.round(low)}°`;
+
+      day.append(dayName, description, temperatures);
+      forecastList.appendChild(day);
+    });
     message.textContent = "";
   } catch (error) {
     weatherResult.hidden = true;

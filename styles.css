@@ -391,3 +391,47 @@ body[data-weather="storm"] {
 #location-button:hover {
   background: #334155;
 }
+
+#forecast-section {
+  margin-top: 24px;
+  text-align: left;
+}
+
+#forecast-section h2 {
+  margin-bottom: 12px;
+  font-size: 16px;
+}
+
+#forecast-list {
+  display: grid;
+  gap: 10px;
+}
+
+.forecast-day {
+  display: grid;
+  grid-template-columns: 55px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  background: white;
+  border-radius: 8px;
+  font-size: 13px;
+}
+
+.forecast-day p {
+  margin: 0;
+}
+
+.forecast-day p:last-child {
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+@media (max-width: 380px) {
+  .forecast-day {
+    grid-template-columns: 45px minmax(0, 1fr) auto;
+    gap: 6px;
+    padding: 10px 8px;
+    font-size: 12px;
+  }
+}
