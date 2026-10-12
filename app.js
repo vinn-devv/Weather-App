@@ -227,7 +227,11 @@ searchForm.addEventListener("submit", async function (event) {
       const high = weather.daily.temperature_2m_max[index];
       const low = weather.daily.temperature_2m_min[index];
 
-      temperatures.textContent = `${Math.round(high)}° / ${Math.round(low)}°`;
+      const convertTemperature = function (value) {
+        return temperatureUnit === "celsius" ? value : (value * 9) / 5 + 32;
+      };
+
+      temperatures.textContent = `${Math.round(convertTemperature(high))}° / ${Math.round(convertTemperature(low))}°${temperatureUnit === "celsius" ? "C" : "F"}`;
 
       day.append(dayName, description, temperatures);
       forecastList.appendChild(day);
