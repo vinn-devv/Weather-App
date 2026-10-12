@@ -14,6 +14,7 @@ const humidity = document.querySelector("#humidity");
 const refreshButton = document.querySelector("#refresh-button");
 
 const searchButton = document.querySelector("#search-button");
+const locationButton = document.querySelector("#location-button");
 const weatherIcon = document.querySelector("#weather-icon");
 const feelsLike = document.querySelector("#feels-like");
 const celsiusButton = document.querySelector("#celsius-button");
@@ -269,4 +270,81 @@ clearHistoryButton.addEventListener("click", function () {
   searchHistory.length = 0;
   localStorage.removeItem("weatherSearchHistory");
   historyList.innerHTML = "";
+});
+
+locationButton.addEventListener("click", function () {
+  if (!navigator.geolocation) {
+    message.classList.add("error");
+    message.textContent = "Geolocation is not supported by your browser.";
+    return;
+  }
+
+  message.classList.remove("error");
+  message.textContent = "Getting your location...";
+
+  navigator.geolocation.getCurrentPosition(
+    async function (position) {
+      const { latitude, longitude } = position.coords;
+
+      try {
+        const weather = await getCurrentWeather(latitude, longitude);
+        weatherIcon.innerHTML = getWeatherIcon(weather.weather_code);
+        cityName.textContent = "Your Current Location";
+
+        document.body.dataset.weather = getWeatherCategory(
+          weather.weather_code,
+        );
+
+        const currentTemperature =
+          temperatureUnit === "celsius"
+            ? weather.temperature_2m
+            : (weather.temperature_2m * 9) / 5 + 32;
+
+        temperature.textContent = `${Math.round(currentTemperature)}°${temperatureUnit === "celsius" ? "C" : "F"}`;
+
+        const feelsLikeTemperature =
+          temperatureUnit === "celsius"
+            ? weather.apparent_temperature
+            : (weather.apparent_temperature * 9) / 5 + 32;
+
+        feelsLike.textContent = `Feels like ${Math.round(feelsLikeTemperature)}°${temperatureUnit === "celsius" ? "C" : "F"}`;
+
+        weatherDescription.textContent = getWeatherDescription(
+          weather.weather_code,
+        );
+        windSpeed.textContent = `Wind: ${weather.wind_speed_10m} km/h`;
+        humidity.textContent = `Humidity: ${weather.relative_humidity_2m}%`;
+
+        localTime.textContent = `Local time: ${new Date().toLocaleTimeString(
+          "en-US",
+          {
+            timeZone: weather.timezone,
+            hour: "numeric",
+            minute: "2-digit",
+          },
+        )}`;
+
+        lastUpdated.textContent = `Last updated: ${new Date().toLocaleTimeString(
+          "en-US",
+          {
+            hour: "numeric",
+            minute: "2-digit",
+          },
+        )}`;
+
+        weatherResult.hidden = false;
+        message.textContent = "";
+        message.textContent =
+          "Weather loaded for your current coordinates. Search a city to see its name.";
+      } catch (error) {
+        message.classList.add("error");
+        message.textContent = error.message;
+      }
+    },
+    function () {
+      message.classList.add("error");
+      message.textContent =
+        "Unable to access location. Check your browser permission settings.";
+    },
+  );
 });
