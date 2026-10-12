@@ -89,14 +89,52 @@ function getWeatherCategory(code) {
 }
 
 function getWeatherAdvice(code) {
-  if (code >= 95) return "Stay alert for thunderstorms.";
-  if (code >= 51 && code <= 82) return "Bring an umbrella.";
-  if (code === 45 || code === 48) return "Take care in low visibility.";
-  if (code >= 71 && code <= 86) return "Dress warmly.";
-  if (code === 0 || code === 1) return "Enjoy the clear weather!";
-  if (code === 2 || code === 3) return "Expect cloudy skies.";
+  if (code >= 95) {
+    return "Thunderstorms expected. Stay indoors if possible.";
+  }
 
-  return "Check conditions before heading out.";
+  if ([65, 67, 82].includes(code)) {
+    return "Heavy rain expected. Avoid flooded areas.";
+  }
+
+  if (code >= 51 && code <= 64) {
+    return "Rain expected. Bring an umbrella.";
+  }
+
+  if ([80, 81].includes(code)) {
+    return "Rain showers expected. Bring an umbrella.";
+  }
+
+  if ([71, 73, 75, 77, 85, 86].includes(code)) {
+    return "Snow or snow showers expected. Dress warmly.";
+  }
+
+  if ([45, 48].includes(code)) {
+    return "Visibility may be reduced. Travel carefully.";
+  }
+
+  if ([0, 1].includes(code)) {
+    return "Clear conditions. Enjoy your day.";
+  }
+
+  if ([2, 3].includes(code)) {
+    return "Cloudy skies. Check conditions before heading out.";
+  }
+
+  return "Check weather conditions before heading out.";
+}
+
+function getAdviceIcon(code) {
+  if (code >= 95) return "storm";
+  if ([65, 67, 82].includes(code)) return "heavy-rain";
+  if ((code >= 51 && code <= 64) || [80, 81].includes(code)) {
+    return "rain";
+  }
+  if ([71, 73, 75, 77, 85, 86].includes(code)) return "snow";
+  if ([45, 48].includes(code)) return "fog";
+  if ([0, 1].includes(code)) return "clear";
+  if ([2, 3].includes(code)) return "cloudy";
+  return "cloudy";
 }
 
 function getWeatherDescription(code) {
@@ -144,6 +182,8 @@ searchForm.addEventListener("submit", async function (event) {
   message.classList.remove("error");
   message.textContent = "Fetching weather...";
   weatherResult.hidden = true;
+  weatherResult.setAttribute("aria-busy", "true");
+  message.textContent = "Loading weather data...";
 
   try {
     const location = await getCityCoordinates(city);
@@ -208,6 +248,15 @@ searchForm.addEventListener("submit", async function (event) {
 
     weatherAdvice.textContent = getWeatherAdvice(weather.weather_code);
 
+    const adviceIcon = document.querySelector(".weather-advice img");
+
+    if (adviceIcon) {
+      adviceIcon.outerHTML = getWeatherIcon(weather.weather_code).replace(
+        "<svg ",
+        '<svg class="advice-weather-icon" ',
+      );
+    }
+
     windSpeed.textContent = `Wind: ${weather.wind_speed_10m} km/h`;
     lastUpdated.textContent = `Last updated: ${new Date().toLocaleTimeString(
       "en-US",
@@ -264,6 +313,7 @@ searchForm.addEventListener("submit", async function (event) {
   } finally {
     searchButton.disabled = false;
     searchButton.textContent = "Search";
+    weatherResult.removeAttribute("aria-busy");
   }
 });
 
@@ -366,6 +416,17 @@ locationButton.addEventListener("click", function () {
         weatherDescription.textContent = getWeatherDescription(
           weather.weather_code,
         );
+        weatherAdvice.textContent = getWeatherAdvice(weather.weather_code);
+
+        const existingAdviceIcon = document.querySelector(
+          ".weather-advice svg, .weather-advice img",
+        );
+
+        if (existingAdviceIcon) {
+          existingAdviceIcon.outerHTML = getWeatherIcon(
+            weather.weather_code,
+          ).replace("<svg ", '<svg class="advice-weather-icon" ');
+        }
         windSpeed.textContent = `Wind: ${weather.wind_speed_10m} km/h`;
         humidity.textContent = `Humidity: ${weather.relative_humidity_2m}%`;
 
