@@ -231,7 +231,7 @@ button {
 
 #search-form {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-columns: 65px 32px minmax(0, 1fr) auto;
   gap: 10px;
   align-items: end;
 }

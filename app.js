@@ -219,6 +219,8 @@ searchForm.addEventListener("submit", async function (event) {
           ? "Today"
           : new Date(date + "T12:00:00").toLocaleDateString("en-US", {
               weekday: "short",
+              month: "short",
+              day: "numeric",
             });
 
       const description = document.createElement("p");
