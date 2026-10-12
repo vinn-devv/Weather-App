@@ -17,6 +17,8 @@ const weatherIcon = document.querySelector("#weather-icon");
 const feelsLike = document.querySelector("#feels-like");
 const celsiusButton = document.querySelector("#celsius-button");
 const fahrenheitButton = document.querySelector("#fahrenheit-button");
+const historyList = document.querySelector("#history-list");
+const searchHistory = [];
 
 let temperatureUnit = "celsius";
 let lastSearchedCity = "";
@@ -137,6 +139,30 @@ searchForm.addEventListener("submit", async function (event) {
     weatherIcon.innerHTML = getWeatherIcon(weather.weather_code);
     document.body.dataset.weather = getWeatherCategory(weather.weather_code);
     cityName.textContent = `${location.name}, ${location.country}`;
+    if (!searchHistory.includes(location.name)) {
+      searchHistory.unshift(location.name);
+    }
+
+    if (searchHistory.length > 5) {
+      searchHistory.pop();
+    }
+
+    historyList.innerHTML = "";
+
+    searchHistory.forEach(function (city) {
+      const item = document.createElement("li");
+      const button = document.createElement("button");
+      button.type = "button";
+      button.textContent = city;
+
+      button.addEventListener("click", function () {
+        cityInput.value = city;
+        searchForm.requestSubmit();
+      });
+
+      item.appendChild(button);
+      historyList.appendChild(item);
+    });
     localTime.textContent = `Local time: ${new Date().toLocaleTimeString(
       "en-US",
       {
