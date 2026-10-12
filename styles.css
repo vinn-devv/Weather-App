@@ -447,3 +447,13 @@ body[data-weather="storm"] {
   width: 28px;
   height: 28px;
 }
+
+#weather-advice {
+  margin: 12px 0;
+  padding: 10px 12px;
+  background: #dbeafe;
+  color: #1e40af;
+  border-radius: 8px;
+  font-size: 13px;
+  line-height: 1.5;
+}

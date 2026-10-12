@@ -10,6 +10,7 @@ const localTime = document.querySelector("#local-time");
 const lastUpdated = document.querySelector("#last-updated");
 const temperature = document.querySelector("#temperature");
 const weatherDescription = document.querySelector("#weather-description");
+const weatherAdvice = document.querySelector("#weather-advice");
 const windSpeed = document.querySelector("#wind-speed");
 const humidity = document.querySelector("#humidity");
 const refreshButton = document.querySelector("#refresh-button");
@@ -85,6 +86,17 @@ function getWeatherCategory(code) {
   if (code >= 95) return "storm";
 
   return "default";
+}
+
+function getWeatherAdvice(code) {
+  if (code >= 95) return "Stay alert for thunderstorms.";
+  if (code >= 51 && code <= 82) return "Bring an umbrella.";
+  if (code === 45 || code === 48) return "Take care in low visibility.";
+  if (code >= 71 && code <= 86) return "Dress warmly.";
+  if (code === 0 || code === 1) return "Enjoy the clear weather!";
+  if (code === 2 || code === 3) return "Expect cloudy skies.";
+
+  return "Check conditions before heading out.";
 }
 
 function getWeatherDescription(code) {
@@ -193,6 +205,9 @@ searchForm.addEventListener("submit", async function (event) {
     weatherDescription.textContent = getWeatherDescription(
       weather.weather_code,
     );
+
+    weatherAdvice.textContent = getWeatherAdvice(weather.weather_code);
+
     windSpeed.textContent = `Wind: ${weather.wind_speed_10m} km/h`;
     lastUpdated.textContent = `Last updated: ${new Date().toLocaleTimeString(
       "en-US",
