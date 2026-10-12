@@ -18,7 +18,8 @@ const feelsLike = document.querySelector("#feels-like");
 const celsiusButton = document.querySelector("#celsius-button");
 const fahrenheitButton = document.querySelector("#fahrenheit-button");
 const historyList = document.querySelector("#history-list");
-const searchHistory = [];
+const searchHistory =
+  JSON.parse(localStorage.getItem("weatherSearchHistory")) || [];
 
 let temperatureUnit = "celsius";
 let lastSearchedCity = "";
@@ -146,6 +147,8 @@ searchForm.addEventListener("submit", async function (event) {
     if (searchHistory.length > 5) {
       searchHistory.pop();
     }
+
+    localStorage.setItem("weatherSearchHistory", JSON.stringify(searchHistory));
 
     historyList.innerHTML = "";
 
