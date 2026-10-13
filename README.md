@@ -10,7 +10,7 @@ A simple, responsive weather app built with vanilla JavaScript. Search for a cit
 
 <p align="center">
   <img src="https://img.shields.io/badge/HTML5-E34F26?style=flat-square&logo=html5&logoColor=white" alt="HTML5">
-  <img src="https://img.shields.io/badge/CSS3-1572B6?style=flat-square&logo=css3&logoColor=white" alt="CSS3">
+  <img src="https://img.shields.io/badge/Tailwind%20CSS-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white" alt="Tailwind CSS">
   <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black" alt="JavaScript">
   <img src="https://img.shields.io/badge/API-Open--Meteo-0F766E?style=flat-square" alt="Open-Meteo">
 </p>
@@ -49,9 +49,9 @@ Open the live app to explore the interface and its features.
 ## Built With
 
 - **HTML5** — application structure
-- **CSS3** — layout, styling, and responsive design
+- **Tailwind CSS** — styling and responsive layout
 - **JavaScript** — application logic and DOM updates
-- **Open-Meteo** — geocoding and weather forecast data
+- **Open-Meteo API** — geocoding and weather forecast data
 - **Geolocation API** — current-location weather
 - **Local Storage** — recent search history
 - **SVG** — weather icons
