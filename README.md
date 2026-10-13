@@ -42,11 +42,11 @@ Check the weather wherever you need it. This application retrieves weather infor
 
 ### Weather App
 
-![Weather App - Current Weather](screenshots/Weather-preview.png)
+![Weather App - Weather Preview](screenshots/Weather-preview.png)
 
 ### Current Weather
 
-![Weather App - Five-Day Forecast](screenshots/Weather-preview2.png)
+![Weather App - Current Weather](screenshots/Weather-preview2.png)
 
 ## Technologies Used
 
